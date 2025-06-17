@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "ruminer-landing",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier . --ignore-path ../../.prettierignore",
+    "format:fix": "prettier . --ignore-path ../../.prettierignore --write",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google-recaptcha/react": "^2.2.0",
+    "@phosphor-icons/react": "^2.1.5",
+    "@radix-ui/react-checkbox": "^0.1.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-id": "^0.1.1",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@stitches/react": "^1.2.5",
+    "clsx": "^2.1.0",
+    "dayjs": "^1.11.13",
+    "next": "^15.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/node": "24.0.3",
+    "@types/react": "^18.3.22",
+    "@types/react-dom": "^18.3.7",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.7.3"
+  }
+}
