@@ -176,6 +176,7 @@ export const LoginButton = ({
 
 export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Language options
@@ -184,8 +185,15 @@ export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
     { code: "zh", label: "简体中文" },
   ];
 
+  // Set client flag on mount to prevent hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Handle language change
   const handleLanguageChange = (langCode: "en" | "zh") => {
+    if (typeof window === 'undefined') return;
+    
     // Update URL with the new language code
     const currentUrl = new URL(window.location.href);
     const currentPath = currentUrl.pathname;
@@ -207,6 +215,8 @@ export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
 
   // Handle click outside to close dropdown
   useEffect(() => {
+    if (!isClient) return;
+    
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
@@ -220,7 +230,7 @@ export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isClient]);
 
   // Get current language display text
   const currentLanguage =
@@ -240,7 +250,7 @@ export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
             <ChevronDownIcon />
           </LanguageButton>
 
-          {isDropdownOpen && (
+          {isClient && isDropdownOpen && (
             <LanguageDropdown>
               {languages.map((language) => (
                 <LanguageOption

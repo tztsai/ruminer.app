@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { LoadingView } from "../patterns/LoadingView";
 import { PageMetaData } from "../patterns/PageMetaData";
@@ -6,6 +7,11 @@ import { About } from "../templates/About";
 
 export default function LandingPage(): JSX.Element {
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -16,8 +22,7 @@ export default function LandingPage(): JSX.Element {
         description="Ruminer is the free, open source, read-it-later app for serious readers."
       />
 
-      {/* {(isLoading || !router.isReady) ? */}
-      {!router.isReady ? (
+      {!mounted || !router.isReady ? (
         <LoadingView bgColor="#FEFCF5" />
       ) : (
         <About lang="en" />

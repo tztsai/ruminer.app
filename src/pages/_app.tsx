@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
-    return <Component {...pageProps} />;
+    return null;
   }
 
   return <Component {...pageProps} />;
