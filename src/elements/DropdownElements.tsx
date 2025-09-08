@@ -8,7 +8,7 @@ import {
   Separator,
   Trigger,
 } from "@radix-ui/react-dropdown-menu";
-import { PopperContentProps } from "@radix-ui/react-popover";
+import { PopoverContentProps } from "@radix-ui/react-popover";
 import { CSS } from "@stitches/react";
 
 import { styled } from "../../tokens/stitches.config";
@@ -156,7 +156,7 @@ export function DropdownOption(props: DropdownOptionProps): JSX.Element {
 }
 
 export function Dropdown(
-  props: DropdownProps & PopperContentProps,
+  props: DropdownProps & PopoverContentProps,
 ): JSX.Element {
   const {
     children,
