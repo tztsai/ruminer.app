@@ -1,4 +1,5 @@
-// Simplified Next.js config for landing page
+import createMDX from '@next/mdx'
+
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
@@ -8,6 +9,10 @@ const ContentSecurityPolicy = `
   connect-src 'self';
   frame-src 'self';
 `;
+
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/
+})
 
 const config = {
   images: {
@@ -30,12 +35,6 @@ const config = {
 
   async redirects() {
     return [
-      // Essential redirects for landing page
-      {
-        source: "/privacy",
-        destination: "https://docs.ruminer.app/about/privacy-policy",
-        permanent: true,
-      },
       {
         source: "/contact",
         destination: "/support",
@@ -43,6 +42,9 @@ const config = {
       },
     ];
   },
+
+  // Configure `pageExtensions` to include markdown and MDX files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 };
 
-module.exports = config;
+export default withMDX(config);
