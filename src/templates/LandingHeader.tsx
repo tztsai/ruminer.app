@@ -26,30 +26,11 @@ const HeaderWrapper = styled(Box, {
   "@lg": {
     padding: "16px 80px",
   },
-  "@smDown": {
-    "& img": {
-      display: "none",
-    },
-  },
 });
 
 const NavLinks = styled(HStack, {
   gap: "32px",
-  display: "none",
-  "@md": {
-    display: "flex",
-  },
-});
-
-const NavLink = styled(Link, {
-  color: "#EDEDED",
-  textDecoration: "none",
-  fontSize: "16px",
-  fontWeight: 500,
-  transition: "color 0.2s ease",
-  "&:hover": {
-    color: "$ruminerYellow", // Royal yellow
-  },
+  display: "flex",
 });
 
 const LanguageSelector = styled("div", {
@@ -108,13 +89,13 @@ const LanguageOption = styled("button", {
   },
 
   "&:hover": {
-    background: "rgba(247, 194, 45, 0.1)",
-    color: "$ruminerYellow",
+    background: "rgba(65, 105, 225, 0.1)",
+    color: "#4169E1",
   },
 
   "&.active": {
-    color: "$ruminerYellow",
-    background: "rgba(247, 194, 45, 0.05)",
+    color: "#4169E1",
+    background: "rgba(65, 105, 225, 0.05)",
   },
 });
 
@@ -122,6 +103,12 @@ const HeaderStart = styled(HStack, {
   gap: "16px",
   display: "flex",
   alignItems: "center",
+  
+  "@smDown": {
+    "& img": {
+      display: "none",
+    },
+  },
 });
 
 // Chevron down icon component
@@ -156,11 +143,11 @@ export const LoginButton = ({
       style={{
         display: "inline-flex",
         background: "transparent",
-        border: "1px solid $ruminerYellow",
+        border: "1px solid #4169E1",
         width: "160px",
         fontSize: "16px",
         justifyContent: "center",
-        color: "$ruminerYellow",
+        color: "#4169E1",
         transition: "all 0.2s ease",
         borderRadius: "10px",
         padding: "12px 100px",

@@ -5,43 +5,23 @@ import { VStack } from "../elements/LayoutPrimitives";
 import { HeroSection } from "./HeroSection";
 import { LandingFooter } from "./LandingFooter";
 import { LandingHeader } from "./LandingHeader";
-import { SolutionSection } from "./SolutionSection";
 
 type LandingPageProps = {
   lang?: "en" | "zh";
 };
 
 const LandingPageWrapper = styled("div", {
-  background: "#1A1A1A", // Dark background
+  background: "linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%)", // Gradient background
   color: "#EDEDED", // Light text
   width: "100%",
   minHeight: "100vh",
-});
-
-// TODO implement scroll snap
-const LandingContainer = styled(VStack, {
-  width: "100%",
-  maxWidth: "1440px",
-  margin: "0 auto",
-  padding: "0 24px",
-  "@md": {
-    padding: "0 48px",
-  },
-  "@lg": {
-    padding: "0 80px",
-  },
 });
 
 export function About({ lang = "en" }: LandingPageProps): JSX.Element {
   return (
     <LandingPageWrapper>
       <LandingHeader lang={lang} />
-
-      <LandingContainer>
-        <HeroSection lang={lang} />
-        <SolutionSection lang={lang} />
-      </LandingContainer>
-
+      <HeroSection lang={lang} />
       <LandingFooter lang={lang} />
     </LandingPageWrapper>
   );

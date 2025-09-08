@@ -146,6 +146,7 @@ export const { styled, css, theme, getCssText, globalCss, keyframes, config } =
         ruminerRed: "#FA5E4A;",
         ruminerGray: "#3D3D3D",
         ruminerYellow: "#FADA5E",
+        ruminerBlue: "#4169E1", // Royal Blue - Primary Brand Color
         ruminerLightGray: "rgb(125, 125, 125)",
         ruminerCtaYellow: "rgb(255, 210, 52)",
         searchActiveOutline: "rgb(255, 210, 52)",

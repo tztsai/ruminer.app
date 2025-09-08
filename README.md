@@ -8,18 +8,12 @@ Ruminer is for thinkers, readers, and creators who capture ideas faster than the
 
 ## Key Capabilities
 
-1. **Effortless Capture**: Continuously imports from your screenshots, Readwise highlights, bookmarks, and social posts
-2. **Intelligent Processing**: Uses OCR and LMM to extract meaning from images and text
-3. **Smart Organization**: AI automatically categorizes and connects related content
-4. **Instant Discovery**: Natural language search helps you find exactly what you're looking for
-5. **Idea Development**: Transform single thoughts into rich threads of connected insights
-
-### A. Intelligent Capture & Organization
-- Ingests content from screenshots, reading highlights, and online posts.
+### A. Effortless Capture & Organization
+- Continuously imports content from screenshots, bookmarks, highlights, and social posts.
 - Multimodal AI extracts insights from images and text.
 - AI automatically labels and connects content.
 - Organize content in hierarchical spaces like a file system.
-- Develop any single thought into a thread of thoughts like a forum post.
+- Develop any single thought into a thread of thoughts, discussing with yourself as well as your AI assistant.
 
 ### B. Powerful Search & Digest
 - Instant keyword search and semantic search.

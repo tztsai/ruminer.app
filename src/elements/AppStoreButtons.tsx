@@ -25,6 +25,13 @@ const AppStoreButtonWrapper = styled("a", {
     transform: "translateY(-2px)",
     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
   },
+
+  "@lgDown": {
+    width: "56px",
+    "& div": {
+      display: "none",
+    },
+  },
 });
 
 const AppleButton = styled(AppStoreButtonWrapper, {
