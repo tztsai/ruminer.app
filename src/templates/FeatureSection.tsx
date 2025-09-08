@@ -20,7 +20,7 @@ const SectionHeadline = styled("h2", {
   fontWeight: 700,
   lineHeight: 1.2,
   margin: "0 0 24px 0",
-  color: "#F7C22D",
+  color: "$ruminerYellow",
   "@mdDown": {
     fontSize: "2rem",
   },
@@ -53,7 +53,7 @@ const FeatureCard = styled(Box, {
   "& h3": {
     fontSize: "1.5rem",
     fontWeight: 600,
-    color: "#F7C22D",
+    color: "$ruminerYellow",
     margin: "0 0 16px 0",
   },
 

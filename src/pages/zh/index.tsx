@@ -8,7 +8,7 @@ export default function LandingPage(): JSX.Element {
         title="Ruminer"
         path="/"
         ogImage="/static/images/og-homepage.png"
-        description="Ruminer 为认真读者提供免付费read-it-later应用程序"
+        description="Ruminer是您个人收藏内容的AI管理员"
       />
 
       <About lang="zh" />

@@ -8,6 +8,7 @@ const components: MDXComponents = {
       margin: '0 auto',
       padding: '2rem 1.5rem',
       lineHeight: '1.7',
+      backgroundColor: '#ffffff',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
       {children}

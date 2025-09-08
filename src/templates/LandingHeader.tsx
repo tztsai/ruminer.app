@@ -5,7 +5,7 @@ import { styled } from "../../tokens/stitches.config";
 import { Button } from "../elements/Button";
 import { RuminerFullLogo } from "../elements/icons/RuminerFullLogo";
 import { Box, HStack, VStack } from "../elements/LayoutPrimitives";
-import { WaitlistButton } from "./CTASection";
+import { AppleAppStoreButton, GooglePlayStoreButton } from "../elements/AppStoreButtons";
 
 const HeaderWrapper = styled(Box, {
   position: "sticky",
@@ -48,7 +48,7 @@ const NavLink = styled(Link, {
   fontWeight: 500,
   transition: "color 0.2s ease",
   "&:hover": {
-    color: "#F7C22D", // Royal yellow
+    color: "$ruminerYellow", // Royal yellow
   },
 });
 
@@ -109,11 +109,11 @@ const LanguageOption = styled("button", {
 
   "&:hover": {
     background: "rgba(247, 194, 45, 0.1)",
-    color: "#F7C22D",
+    color: "$ruminerYellow",
   },
 
   "&.active": {
-    color: "#F7C22D",
+    color: "$ruminerYellow",
     background: "rgba(247, 194, 45, 0.05)",
   },
 });
@@ -156,11 +156,11 @@ export const LoginButton = ({
       style={{
         display: "inline-flex",
         background: "transparent",
-        border: "1px solid #F7C22D",
+        border: "1px solid $ruminerYellow",
         width: "160px",
         fontSize: "16px",
         justifyContent: "center",
-        color: "#F7C22D",
+        color: "$ruminerYellow",
         transition: "all 0.2s ease",
         borderRadius: "10px",
         padding: "12px 100px",
@@ -269,34 +269,9 @@ export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
       </HeaderStart>
 
       <NavLinks>
-        <NavLink href="#features">
-          {lang === "zh" ? "功能" : "Features"}
-        </NavLink>
-        <NavLink href="#why-ruminer">
-          {lang === "zh" ? "为什么选择 Ruminer" : "Why Ruminer"}
-        </NavLink>
-        <NavLink href="#faq">{lang === "zh" ? "常见问题" : "FAQ"}</NavLink>
+        <AppleAppStoreButton />
+        <GooglePlayStoreButton />
       </NavLinks>
-
-      <Button
-        css={{
-          background: "#1A1A1A",
-          padding: "10px 20px",
-          fontSize: "20px",
-          border: "1px solid #BCBCBC",
-          transition: "all 0.2s ease",
-          "&:hover": {
-            borderColor: "#F7C22D",
-          },
-          "& a": {
-            fontWeight: 720,
-            textDecoration: "none",
-            color: "#F7C22D",
-          },
-        }}
-      >
-        <a href="#beta">{lang === "zh" ? "我有兴趣！" : "Count Me In!"}</a>
-      </Button>
     </HeaderWrapper>
   );
 }

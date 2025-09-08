@@ -19,7 +19,7 @@ export default function LandingPage(): JSX.Element {
         title="Ruminer"
         path="/"
         ogImage="/static/images/og-homepage.png"
-        description="Ruminer is the free, open source, read-it-later app for serious readers."
+        description="Ruminer is an AI librarian of your personal collections."
       />
 
       {!mounted || !router.isReady ? (

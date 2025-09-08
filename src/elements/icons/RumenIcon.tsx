@@ -7,7 +7,7 @@ import { IconProps } from "./IconProps";
 export class RumenIcon extends React.Component<IconProps> {
   render() {
     const size = (this.props.size || 26).toString();
-    const color = (this.props.color || "#F7C22D").toString();
+    const color = (this.props.color || "$ruminerYellow").toString();
 
     return (
       <svg width={size} height={size} fill="none" viewBox="0 0 400 400">

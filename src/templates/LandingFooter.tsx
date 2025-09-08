@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 import { styled } from "../../tokens/stitches.config";
+import { fetchEndpoint } from "../../lib/appConfig";
 import { RuminerFullLogo } from "../elements/icons/RuminerFullLogo";
 import { Box, HStack, VStack } from "../elements/LayoutPrimitives";
 
@@ -35,7 +36,7 @@ const FooterColumns = styled(Box, {
   },
 
   "@md": {
-    gridTemplateColumns: "2fr 1fr 1fr 1fr",
+    gridTemplateColumns: "1fr 1fr 1fr",
   },
 });
 
@@ -45,7 +46,7 @@ const FooterColumn = styled(VStack, {
   "& h3": {
     fontSize: "1rem",
     fontWeight: 600,
-    color: "#F7C22D",
+    color: "$ruminerYellow",
     margin: "0 0 8px 0",
   },
 });
@@ -94,7 +95,7 @@ const SocialLink = styled(Link, {
   transition: "color 0.2s ease",
 
   "&:hover": {
-    color: "#F7C22D",
+    color: "$ruminerYellow",
   },
 
   "& svg": {
@@ -130,7 +131,7 @@ const EmailInput = styled("input", {
 
 const SubscribeButton = styled("button", {
   padding: "12px 16px",
-  background: "#F7C22D",
+  background: "$ruminerYellow",
   border: "none",
   borderRadius: "6px",
   color: "#1A1A1A",
@@ -176,41 +177,90 @@ export function LandingFooter({ lang }: { lang: "en" | "zh" }): JSX.Element {
   const productLinks =
     lang === "zh"
       ? [
-          { text: "功能", href: "#features" },
-          { text: "路线图（即将推出）", href: "#roadmap" },
-          { text: "价格（即将推出）", href: "#pricing" },
-        ]
+        { text: "功能", href: "#features" },
+        { text: "路线图（即将推出）", href: "#roadmap" },
+        { text: "价格（即将推出）", href: "#pricing" },
+      ]
       : [
-          { text: "Features", href: "#features" },
-          { text: "Roadmap (coming soon)", href: "#roadmap" },
-          { text: "Pricing (coming soon)", href: "#pricing" },
-        ];
+        { text: "Features", href: "#features" },
+        { text: "Roadmap (coming soon)", href: "#roadmap" },
+        { text: "Pricing (coming soon)", href: "#pricing" },
+      ];
 
   const companyLinks =
     lang === "zh"
       ? [
-          { text: "关于我们", href: "https://www.atmaware.com" },
-          { text: "博客（即将推出）", href: "#blog" },
-          // { text: '招贤纳士', href: '#careers' },
-        ]
+        { text: "关于我们", href: "https://www.atmaware.com" },
+        { text: "博客（即将推出）", href: "#blog" },
+        // { text: '招贤纳士', href: '#careers' },
+      ]
       : [
-          { text: "About Us (coming soon)", href: "https://www.atmaware.com" },
-          { text: "Blog (coming soon)", href: "#blog" },
-          // { text: 'Careers', href: '#careers' },
-        ];
+        { text: "About Us (coming soon)", href: "https://www.atmaware.com" },
+        { text: "Blog (coming soon)", href: "#blog" },
+        // { text: 'Careers', href: '#careers' },
+      ];
 
   const supportLinks =
     lang === "zh"
       ? [
-          { text: "常见问题", href: "#faq" },
-          { text: "文档（即将推出）", href: "https://docs.ruminer.app" },
-          { text: "联系我们", href: "mailto:poetry.coder@gmail.com" },
-        ]
+        { text: "常见问题", href: "#faq" },
+        { text: "文档（即将推出）", href: "https://docs.ruminer.app" },
+        { text: "联系我们", href: "mailto:poetry.coder@gmail.com" },
+      ]
       : [
-          { text: "FAQs", href: "#faq" },
-          { text: "Docs (coming soon)", href: "https://docs.ruminer.app" },
-          { text: "Contact Us", href: "mailto:poetry.coder@gmail.com" },
-        ];
+        { text: "FAQs", href: "#faq" },
+        { text: "Docs (coming soon)", href: "https://docs.ruminer.app" },
+        { text: "Contact Us", href: "mailto:poetry.coder@gmail.com" },
+      ];
+
+  const [email, setEmail] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Send the data to our API endpoint
+      const response = await fetch(`${fetchEndpoint}/waitlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          feedback: feedback.trim(),
+          date: new Date().toISOString().split("T")[0],
+          language: lang,
+        }),
+      });
+
+      console.log("Waitlist API response:", response);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to join waitlist");
+      }
+
+      setIsSubmitted(true);
+      // Clear form data after successful submission
+      setEmail("");
+      setFeedback("");
+    } catch (err) {
+      console.error("Waitlist submission error:", err);
+      setError(
+        lang === "zh"
+          ? "提交失败，请稍后再试。"
+          : "Submission failed. Please try again later.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const socialLinks = (
     <SocialLinks>
@@ -270,47 +320,25 @@ export function LandingFooter({ lang }: { lang: "en" | "zh" }): JSX.Element {
             </LogoSocialContainer>
             <FooterDescription>
               {lang === "zh"
-                ? "Ruminer是一个知识管理平台，帮助您收集、组织和实现有效利用您的数字资源。完全拥有您的数据，同时获得AI驱动的洞察力。"
-                : "Ruminer is a knowledge management platform that helps you collect, organize, and actionize your digital resources. Own your data completely while getting AI-powered insights."}
+                ? "Ruminer 守藏师，个人记忆助理。"
+                : "Ruminer, a personal memory assistant."}
             </FooterDescription>
+          </FooterColumn>
+          <FooterColumn>
 
-            {/* <NewsletterForm>
-              <EmailInput 
-                type="email" 
-                placeholder={lang === 'zh' ? '您的电子邮件地址' : 'Your email address'} 
+            <NewsletterForm>
+              <EmailInput
+                type="email"
+                placeholder={lang === 'zh' ? '您的电子邮件地址' : 'Your email address'}
                 aria-label={lang === 'zh' ? '电子邮件' : 'Email'}
               />
-              <SubscribeButton type="submit">
+              <SubscribeButton
+                type="submit"
+                onSubmit={handleSubmit}
+              >
                 {lang === 'zh' ? '订阅邮件推送' : 'Subscribe to Newsletter'}
               </SubscribeButton>
-            </NewsletterForm> */}
-          </FooterColumn>
-
-          <FooterColumn>
-            <h3>{lang === "zh" ? "产品" : "Product"}</h3>
-            {productLinks.map((link, index) => (
-              <FooterLink key={index} href={link.href}>
-                {link.text}
-              </FooterLink>
-            ))}
-          </FooterColumn>
-
-          <FooterColumn>
-            <h3>{lang === "zh" ? "公司" : "Company"}</h3>
-            {companyLinks.map((link, index) => (
-              <FooterLink key={index} href={link.href}>
-                {link.text}
-              </FooterLink>
-            ))}
-          </FooterColumn>
-
-          <FooterColumn>
-            <h3>{lang === "zh" ? "支持" : "Support"}</h3>
-            {supportLinks.map((link, index) => (
-              <FooterLink key={index} href={link.href}>
-                {link.text}
-              </FooterLink>
-            ))}
+            </NewsletterForm>
           </FooterColumn>
         </FooterColumns>
 

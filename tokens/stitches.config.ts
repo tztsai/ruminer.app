@@ -145,7 +145,7 @@ export const { styled, css, theme, getCssText, globalCss, keyframes, config } =
         // Brand Colors
         ruminerRed: "#FA5E4A;",
         ruminerGray: "#3D3D3D",
-        ruminerYellow: "#FFEAA0",
+        ruminerYellow: "#FADA5E",
         ruminerLightGray: "rgb(125, 125, 125)",
         ruminerCtaYellow: "rgb(255, 210, 52)",
         searchActiveOutline: "rgb(255, 210, 52)",

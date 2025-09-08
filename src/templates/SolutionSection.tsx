@@ -14,35 +14,6 @@ const SectionWrapper = styled(Box, {
   margin: "20px 0",
 });
 
-const SectionHeadline = styled("h2", {
-  fontSize: "2.5rem",
-  fontWeight: 700,
-  lineHeight: 1.2,
-  margin: "0 0 24px 0",
-  color: "#F7C22D",
-  textAlign: "center",
-  "@mdDown": {
-    fontSize: "2rem",
-  },
-});
-
-const SolutionCard = styled(Box, {
-  maxWidth: "900px",
-  margin: "50px auto 50px auto",
-  padding: "20px",
-  background: "rgba(247, 194, 45, 0.05)",
-  borderRadius: "16px",
-  border: "1px solid rgba(247, 194, 45, 0.2)",
-});
-
-const CoreIntro = styled("p", {
-  fontSize: "1.25rem",
-  lineHeight: 1.6,
-  color: "#EDEDED",
-  margin: "0 0",
-  textAlign: "center",
-});
-
 const ComponentsGrid = styled(Box, {
   display: "grid",
   gridTemplateColumns: "1fr",
@@ -74,7 +45,7 @@ const ComponentCard = styled(VStack, {
   "& h3": {
     fontSize: "1.5rem",
     fontWeight: 600,
-    color: "#F7C22D",
+    color: "$ruminerYellow",
     margin: "0 0 8px 0",
     display: "flex",
     alignItems: "center",
@@ -117,7 +88,7 @@ const ComponentCard = styled(VStack, {
   "& svg": {
     width: "30px",
     height: "30px",
-    color: "#F7C22D",
+    color: "$ruminerYellow",
   },
 
   "& .visual": {
@@ -158,7 +129,7 @@ const DropdownContainer = styled("div", {
 });
 
 const DropdownTrigger = styled("button", {
-  background: "#F7C22D",
+  background: "$ruminerYellow",
   color: "#1A1A1A",
   fontWeight: 600,
   borderRadius: "8px",
@@ -223,7 +194,7 @@ const DropdownItem = styled("a", {
 
   "&:hover": {
     backgroundColor: "rgba(247, 194, 45, 0.15)",
-    color: "#F7C22D",
+    color: "$ruminerYellow",
   },
 });
 
@@ -396,7 +367,7 @@ export function SolutionSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
                 您的一站式信息处理平台。您的AI私人秘书{" "}
                 <Link
                   href="https://www.weforum.org/stories/2021/08/second-brain-in-gut/"
-                  style={{ color: "#F7C22D" }}
+                  style={{ color: "$ruminerYellow" }}
                 >
                   ENS
                 </Link>{" "}
@@ -575,7 +546,7 @@ export function SolutionSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
                 AI agent{" "}
                 <Link
                   href="https://www.weforum.org/stories/2021/08/second-brain-in-gut/"
-                  style={{ color: "#F7C22D" }}
+                  style={{ color: "$ruminerYellow" }}
                 >
                   ENS
                 </Link>{" "}
@@ -740,21 +711,6 @@ export function SolutionSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
 
   return (
     <SectionWrapper id="solution">
-      <SectionHeadline>
-        {lang === "zh"
-          ? "Ruminer：整合、消化和掌控您的数字世界"
-          : "Ruminer: Integrate, Digest, and Own Your Digital World"}
-      </SectionHeadline>
-
-      <SolutionCard>
-        <CoreIntro>
-          {lang === "zh"
-            ? 'Ruminer 的目标是成为您数字空间中的中央"消化系统"，专为重视知识并要求完全控制的用户而打造。我们提供工具持续收集您的信息，提供智能来理解和整理它，并让您自由地永久存储在您选择的任何地方。'
-            : 'Ruminer aims to be the central "digestive system" in your digital space, built for those who value their knowledge and demand full control. We provide the tools to continuously gather your information, the intelligence to understand and curate it, and the freedom to store it wherever you choose – forever.'}
-        </CoreIntro>
-      </SolutionCard>
-
-      {/* First row - Original solution components */}
       <ComponentsGrid id="features">
         {components.slice(0, 3).map((component, index) => (
           <ComponentCard key={index}>
@@ -778,32 +734,6 @@ export function SolutionSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
           </ComponentCard>
         ))}
       </ComponentsGrid>
-
-      {/* Second row - Ens AI capabilities */}
-      {/* <ComponentsGrid>
-        {components.slice(3, 6).map((component, index) => (
-          <ComponentCard key={index + 3}>
-            <div className="icon-container">
-              {component.icon}
-            </div>
-            <h3>{component.title}</h3>
-            <div className="subtitle">{component.subtitle}</div>
-            <div className="description">{component.description}</div>
-            {component.benefit && (
-              <div className="benefit">
-                <strong>{lang === 'zh' ? '优势：' : 'Benefit:'}</strong> {component.benefit}
-              </div>
-            )}
-            {component.visual && (
-              <div className="visual">{component.visual}</div>
-            )}
-            <HoverDropdown
-              buttonText={component.buttonText}
-              items={component.dropdownItems}
-            />
-          </ComponentCard>
-        ))}
-      </ComponentsGrid> */}
     </SectionWrapper>
   );
 }
