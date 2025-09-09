@@ -279,7 +279,7 @@ export function HeroSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
     tagline: "For active minds who catch ideas faster than they can organize",
     capabilities: [
       {
-        title: "Frictionless Collection",
+        title: "Frictionless Integration",
         description: "Continuously imports content from screenshots, bookmarks, highlights, and social posts. Multimodal AI extracts insights from images and text. AI automatically labels and connects content.",
         features: ["Screenshot OCR", "Continuous Import", "Auto-tagging", "Hierarchical Spaces", "Thought Threads"]
       },

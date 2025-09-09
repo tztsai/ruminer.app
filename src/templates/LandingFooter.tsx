@@ -338,7 +338,7 @@ export function LandingFooter({ lang }: { lang: "en" | "zh" }): JSX.Element {
             </LogoSocialContainer>
             <FooterDescription>
               {lang === "zh"
-                ? "Ruminer（守藏师）是您的数字记忆助理。"
+                ? "Ruminer（守藏史）是您的数字记忆助理。"
                 : "Ruminer is your cyber memory assistant."}
             </FooterDescription>
           </FooterColumn>
