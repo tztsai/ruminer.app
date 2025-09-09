@@ -19,6 +19,8 @@ const config = {
     formats: ["image/avif", "image/webp"],
   },
 
+  trailingSlash: true,
+  
   async headers() {
     return [
       {

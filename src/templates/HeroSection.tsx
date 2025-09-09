@@ -43,7 +43,7 @@ const HeroHeadline = styled("h1", {
   fontWeight: 900,
   lineHeight: 1.05,
   margin: "0 0 40px 0",
-  color: "#FFFFFF",
+  color: "#FADA5E",
   maxWidth: "950px",
   letterSpacing: "-0.02em",
   textShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
@@ -257,9 +257,10 @@ const SearchIcon = () => (
 
 export function HeroSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
   const content = lang === "zh" ? {
-    headline: "Ruminer：个人记忆助理",
-    subheadline: "将散乱的记忆转化为 <strong>可搜索、互联的知识库</strong>",
-    tagline: "为思考者、阅读者和创作者而设计",
+    headline: "Ruminer 守藏史",
+    subheadline: "將散亂的數字記憶轉化為<strong>統一的、可搜索的智能知識庫</strong>",
+    // tagline: "为思考者、阅读者和创作者而设计",
+    tagline: "為思想活躍者輕鬆捕捉和整理想法及信息",
     capabilities: [
       {
         title: "轻松捕获 & 整理",
@@ -273,19 +274,19 @@ export function HeroSection({ lang }: { lang: "en" | "zh" }): JSX.Element {
       }
     ]
   } : {
-    headline: "Ruminer: A Personal Memory Assistant",
-    subheadline: "Transform scattered memories into a <strong>searchable, interconnected knowledge base</strong>",
-    tagline: "For thinkers, readers, and creators who capture ideas faster than they can organize them",
+    headline: "Ruminer 守藏史",
+    subheadline: "Transform scattered digital memories into an <strong>integrated, searchable, intelligent knowledge base</strong>",
+    tagline: "For active minds who catch ideas faster than they can organize",
     capabilities: [
       {
-        title: "Effortless Collection",
+        title: "Frictionless Collection",
         description: "Continuously imports content from screenshots, bookmarks, highlights, and social posts. Multimodal AI extracts insights from images and text. AI automatically labels and connects content.",
-        features: ["Personal Image Search", "Auto-tagging", "Hierarchical Spaces", "Thought Threads"]
+        features: ["Screenshot OCR", "Continuous Import", "Auto-tagging", "Hierarchical Spaces", "Thought Threads"]
       },
       {
         title: "Insightful Rumination",
-        description: "Instant keyword & semantic search with versatile filters. Ask AI any question and get a synthesized answer with references to relevant records. Resurface forgotten insights via daily digests.",
-        features: ["AI Search Agent", "Cited Report", "Mindmap Synthesis", "Daily Digest"]
+        description: "Instant keyword & semantic search with versatile filters. Ask AI any question and get a fact-based answer with a list of cited records. Resurface forgotten insights via daily digests and thread follow-ups.",
+        features: ["AI Search Agent", "Report with Citations", "Mindmap Synthesis", "Daily Digest", "Flashcard Review"]
       }
     ]
   };

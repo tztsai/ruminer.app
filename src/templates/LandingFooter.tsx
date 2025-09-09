@@ -14,7 +14,7 @@ const FooterWrapper = styled(Box, {
   background: "linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #161616 100%)",
   borderTop: "1px solid rgba(247, 194, 45, 0.15)",
   position: "relative",
-  
+
   "&::before": {
     content: '""',
     position: "absolute",
@@ -133,7 +133,7 @@ const NewsletterForm = styled("form", {
   gap: "16px",
   width: "100%",
   marginTop: "10px",
-  
+
   "@md": {
     maxWidth: "400px",
   },
@@ -189,7 +189,7 @@ const SubscribeButton = styled("button", {
   "&:hover": {
     transform: "translateY(-1px)",
     boxShadow: "0 6px 20px rgba(247, 194, 45, 0.3)",
-    
+
     "&::before": {
       left: "100%",
     },
@@ -203,7 +203,7 @@ const SubscribeButton = styled("button", {
     opacity: 0.6,
     cursor: "not-allowed",
     transform: "none",
-    
+
     "&:hover": {
       transform: "none",
       boxShadow: "none",
@@ -246,7 +246,7 @@ const StatusMessage = styled("div", {
   padding: "8px 12px",
   borderRadius: "6px",
   marginTop: "8px",
-  
+
   variants: {
     type: {
       success: {
@@ -338,45 +338,45 @@ export function LandingFooter({ lang }: { lang: "en" | "zh" }): JSX.Element {
             </LogoSocialContainer>
             <FooterDescription>
               {lang === "zh"
-                ? "Ruminer 守藏师，个人记忆助理。"
-                : "Ruminer, a personal memory assistant."}
+                ? "Ruminer（守藏师）是您的数字记忆助理。"
+                : "Ruminer is your cyber memory assistant."}
             </FooterDescription>
           </FooterColumn>
-          
-            <NewsletterForm onSubmit={handleSubmit}>
-              <EmailInput
-                type="email"
-                placeholder={lang === 'zh' ? '您的电子邮件地址' : 'Your email address'}
-                aria-label={lang === 'zh' ? '电子邮件' : 'Email'}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <SubscribeButton
-                type="submit"
-                disabled={isSubmitting || !email.trim()}
-              >
-                {isSubmitting 
-                  ? (lang === 'zh' ? '提交中...' : 'Submitting...') 
-                  : (lang === 'zh' ? '订阅邮件推送' : 'Subscribe to Newsletter')
+
+          <NewsletterForm onSubmit={handleSubmit}>
+            <EmailInput
+              type="email"
+              placeholder={lang === 'zh' ? '您的电子邮件地址' : 'Your email address'}
+              aria-label={lang === 'zh' ? '电子邮件' : 'Email'}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <SubscribeButton
+              type="submit"
+              disabled={isSubmitting || !email.trim()}
+            >
+              {isSubmitting
+                ? (lang === 'zh' ? '提交中...' : 'Submitting...')
+                : (lang === 'zh' ? '订阅邮件推送' : 'Subscribe to Newsletter')
+              }
+            </SubscribeButton>
+
+            {isSubmitted && (
+              <StatusMessage type="success">
+                {lang === "zh"
+                  ? "感谢您的订阅！我们会及时向您发送更新。"
+                  : "Thanks for subscribing! We'll keep you updated."
                 }
-              </SubscribeButton>
-              
-              {isSubmitted && (
-                <StatusMessage type="success">
-                  {lang === "zh" 
-                    ? "感谢您的订阅！我们会及时向您发送更新。" 
-                    : "Thanks for subscribing! We'll keep you updated."
-                  }
-                </StatusMessage>
-              )}
-              
-              {error && (
-                <StatusMessage type="error">
-                  {error}
-                </StatusMessage>
-              )}
-            </NewsletterForm>
+              </StatusMessage>
+            )}
+
+            {error && (
+              <StatusMessage type="error">
+                {error}
+              </StatusMessage>
+            )}
+          </NewsletterForm>
         </FooterColumns>
 
         <Copyright>

@@ -17,5 +17,13 @@
         }
       ]
     }
+  ],
+  "trailingSlash": true,
+  "redirects": [
+    { 
+      "source": "/contact",
+      "destination": "/support",
+      "permanent": true
+    }
   ]
 }

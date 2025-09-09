@@ -1,6 +1,6 @@
 # Ruminer: Your Personal Memory Assistant
 
-Ruminer is an AI searcher and integrator of your digital foorprints. It transforms scattered memories—screenshots, notes, bookmarks, and posts—into a searchable, interconnected knowledge base. It offloads your attention to create mental space for creativity and reflection, helping you rediscover buried insights and connect ideas across time and space.
+Ruminer is an AI searcher and digestor of your digital foorprints. It transforms scattered memories—screenshots, notes, bookmarks, and posts—into a searchable, interconnected knowledge base. It offloads your attention to create mental space for creativity and reflection, helping you rediscover buried insights and connect ideas across time and space.
 
 Ingest -> Retrieve -> Digest
 Ingest: Screenshots, Notes, Readwise, X/Threads/Substack/Blog
