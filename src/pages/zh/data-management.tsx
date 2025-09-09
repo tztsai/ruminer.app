@@ -6,26 +6,26 @@ import { PageMetaData } from "../../patterns/PageMetaData";
 import { DataManagement } from "../../templates/DataManagement";
 
 export default function DataManagementPageZh(): JSX.Element {
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
+    const router = useRouter();
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
-  return (
-    <>
-      <PageMetaData
-        title="数据管理 - Ruminer"
-        path="/zh/data-management"
-        description="管理您的个人数据和账户设置。"
-      />
+    return (
+        <>
+            <PageMetaData
+                title="数据管理 - Ruminer"
+                path="/zh/data-management"
+                description="管理您的个人数据和账户设置。"
+            />
 
-      {!mounted || !router.isReady ? (
-        <LoadingView bgColor="#1A1A1A" />
-      ) : (
-        <DataManagement lang="zh" />
-      )}
-    </>
-  );
+            {!mounted || !router.isReady ? (
+                <LoadingView bgColor="#1A1A1A" />
+            ) : (
+                <DataManagement lang="zh" />
+            )}
+        </>
+    );
 }

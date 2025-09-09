@@ -6,26 +6,26 @@ import { PageMetaData } from "../patterns/PageMetaData";
 import { DataManagement } from "../templates/DataManagement";
 
 export default function DataManagementPage(): JSX.Element {
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
+    const router = useRouter();
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
-  return (
-    <>
-      <PageMetaData
-        title="Data Management - Ruminer"
-        path="/data-management"
-        description="Manage your personal data and account settings."
-      />
+    return (
+        <>
+            <PageMetaData
+                title="Data Management - Ruminer"
+                path="/data-management"
+                description="Manage your personal data and account settings."
+            />
 
-      {!mounted || !router.isReady ? (
-        <LoadingView bgColor="#1A1A1A" />
-      ) : (
-        <DataManagement lang="en" />
-      )}
-    </>
-  );
+            {!mounted || !router.isReady ? (
+                <LoadingView bgColor="#1A1A1A" />
+            ) : (
+                <DataManagement lang="en" />
+            )}
+        </>
+    );
 }

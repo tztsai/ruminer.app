@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { LoadingView } from "../patterns/LoadingView";
 import { PageMetaData } from "../patterns/PageMetaData";
@@ -27,6 +29,9 @@ export default function LandingPage(): JSX.Element {
       ) : (
         <About lang="en" />
       )}
+
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }

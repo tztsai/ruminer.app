@@ -2,6 +2,11 @@
 
 Ruminer is an AI searcher and integrator of your digital foorprints. It transforms scattered memories—screenshots, notes, bookmarks, and posts—into a searchable, interconnected knowledge base. It offloads your attention to create mental space for creativity and reflection, helping you rediscover buried insights and connect ideas across time and space.
 
+Ingest -> Retrieve -> Digest
+Ingest: Screenshots, Notes, Readwise, X/Threads/Substack/Blog
+Retrieve: Text search, Agentic search, Smart labels
+Digest: Search report, Daily digest, Thread tracker
+
 ## Target Audience
 
 Ruminer is for thinkers, readers, and creators who capture ideas faster than they can organize them and want to turn their personal archive into a source of inspiration.
