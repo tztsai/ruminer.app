@@ -76,11 +76,19 @@ When You access the Service by or through a mobile device, We may collect certai
 
 We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.
 
+#### Information Processed from Your Content
+
+To provide its core functionality, our Application processes photos, videos, and other media on your device. We use on-device technologies to perform Optical Character Recognition (OCR) and extract text from your media. Only this extracted text and any labels you create are collected and stored on our servers, linked to your account.
+
+**The Application does not upload or store your original photos, videos, or other media files on our servers.**
+
+When you choose to use optional cloud-enhanced features (such as advanced text extraction, content analysis, or AI search), you may be prompted to send certain data, including images or text, to third-party AI services (like Google Gemini). This only happens with your explicit, manual action for each instance.
+
 #### Information from Third-Party Services
 
 The Company allows You to create an account and log in to use the Service through the following Third-party Services:
 
-- Google (for authentication and OCR services)
+- Google (for authentication)
 
 Additionally, you may choose to import data from the following third-party services:
 
@@ -119,13 +127,13 @@ For more information about the cookies we use and your choices regarding cookies
 
 The Company may use Personal Data for the following purposes:
 
-**To provide and maintain our Service**, including to monitor the usage of our Service and provide core functionality such as OCR processing, content organization, and search capabilities.
+**To provide and maintain our Service**, including to monitor the usage of our Service and provide core functionality such as on-device OCR processing, content organization, and search capabilities.
 
 **To manage Your Account:** to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.
 
-**For AI-powered features:** To provide AI-powered search, content analysis, and organization features using services like Google Gemini. When you use AI search features, extracted text from your content may be sent to AI service providers to generate responses and insights.
+**For AI-powered features:** To provide optional, user-triggered features for content analysis and organization using services like Google Gemini. When you choose to use these features, extracted text or images from your content may be sent to AI service providers to generate responses and insights. This action is always initiated by yourself for each use.
 
-**For OCR processing:** To extract text from your images using both on-device processing (MLKit) and cloud-based OCR services (Google Gemini API) when enhanced accuracy is needed.
+**For OCR processing:** To extract text from your images using on-device processing (Google ML Kit). You may optionally choose to use cloud-based OCR services (Google Gemini API) for enhanced accuracy, which requires sending image data for processing. This is a user-initiated action.
 
 **To provide integrations:** To import and sync data from third-party services like Readwise, Kindle, and other content platforms when you choose to connect these services.
 
@@ -139,7 +147,7 @@ The Company may use Personal Data for the following purposes:
 
 We may share Your personal information in the following situations:
 
-- **With Service Providers:** We may share Your personal information with Service Providers such as Supabase (for backend and authentication), Google (for OCR and AI services), to monitor and analyze the use of our Service, and to contact You.
+- **With Service Providers:** We may share Your personal information with Service Providers such as Firebase (for backend, authentication, and analytics) and Google (for optional OCR and AI services), to monitor and analyze the use of our Service, and to contact You.
 - **With Your consent:** We may disclose Your personal information for any other purpose with Your consent.
 - **For legal compliance:** As described in the "Disclosure of Your Personal Data" section below.
 
@@ -330,35 +338,6 @@ Please note that the categories listed above are those defined in the CCPA. This
 
 When We disclose personal information for a business purpose or a commercial purpose, We enter a contract that describes the purpose and requires the recipient to both keep that personal information confidential and not use it for any purpose except performing the contract.
 
-### Sale of Personal Information
-
-As defined in the CCPA, "sell" and "sale" mean selling, renting, releasing, disclosing, disseminating, making available, transferring, or otherwise communicating orally, in writing, or by electronic or other means, a consumer's personal information by the business to a third party for valuable consideration. This means that We may have received some kind of benefit in return for sharing personal information, but not necessarily a monetary benefit.
-
-Please note that the categories listed below are those defined in the CCPA. This does not mean that all examples of that category of personal information were in fact sold, but reflects our good faith belief to the best of our knowledge that some of that information from the applicable category may be and may have been shared for value in return.
-
-We may sell and may have sold in the last twelve (12) months the following categories of personal information:
-
-- Category A: Identifiers
-- Category B: Personal information categories listed in the California Customer Records statute (Cal. Civ. Code § 1798.80(e))
-- Category F: Internet or other similar network activity
-
-### Share of Personal Information
-
-We may share Your personal information identified in the above categories with the following categories of third parties:
-
-- Service Providers
-- Our affiliates
-- Our business partners
-- Third party vendors to whom You or Your agents authorize Us to disclose Your personal information in connection with products or services We provide to You
-
-### Sale of Personal Information of Minors Under 16 Years of Age
-
-We do not knowingly collect personal information from minors under the age of 16 through our Service, although certain third party websites that we link to may do so. These third-party websites have their own terms of use and privacy policies and we encourage parents and legal guardians to monitor their children's Internet usage and instruct their children to never provide information on other websites without their permission.
-
-We do not sell the personal information of Consumers We actually know are less than 16 years of age, unless We receive affirmative authorization (the "right to opt-in") from either the Consumer who is between 13 and 16 years of age, or the parent or guardian of a Consumer less than 13 years of age. Consumers who opt-in to the sale of personal information may opt-out of future sales at any time. To exercise the right to opt-out, You (or Your authorized representative) may submit a request to Us by contacting Us.
-
-If You have reason to believe that a child under the age of 13 (or 16) has provided Us with personal information, please contact Us with sufficient detail to enable Us to delete that information.
-
 ### Your Rights under the CCPA
 
 The CCPA provides California residents with specific rights regarding their personal information. If You are a resident of California, You have the following rights:
@@ -373,7 +352,7 @@ The CCPA provides California residents with specific rights regarding their pers
   - If we sold Your personal information or disclosed Your personal information for a business purpose, We will disclose to You:
     - The categories of personal information categories sold
     - The categories of personal information categories disclosed
-- **The right to say no to the sale of Personal Data (opt-out).** You have the right to direct Us to not sell Your personal information. To submit an opt-out request please contact Us.
+- **The right to say no to the sale of Personal Data (opt-out).** We do not sell your personal information, so there is no need to opt out.
 - **The right to delete Personal Data.** You have the right to request the deletion of Your Personal Data, subject to certain exceptions. Once We receive and confirm Your request, We will delete (and direct Our Service Providers to delete) Your personal information from our records, unless an exception applies. We may deny Your deletion request if retaining the information is necessary for Us or Our Service Providers to:
   - Complete the transaction for which We collected the personal information, provide a good or service that You requested, take actions reasonably anticipated within the context of our ongoing business relationship with You, or otherwise perform our contract with You.
   - Detect security incidents, protect against malicious, deceptive, fraudulent, or illegal activity, or prosecute those responsible for such activities.
@@ -414,9 +393,9 @@ Any disclosures We provide will only cover the 12-month period preceding the ver
 
 For data portability requests, We will select a format to provide Your personal information that is readily useable and should allow You to transmit the information from one entity to another entity without hindrance.
 
-### Do Not Sell My Personal Information
+### We Do Not Sell Your Personal Information
 
-You have the right to opt-out of the sale of Your personal information. Once We receive and confirm a verifiable consumer request from You, we will stop selling Your personal information. To exercise Your right to opt-out, please contact Us.
+We do not sell your personal information. To exercise Your data protection rights, please contact Us.
 
 ## "Do Not Track" Policy as Required by California Online Privacy Protection Act (CalOPPA)
 
