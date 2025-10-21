@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { styled } from "../../tokens/stitches.config";
-import { Box, VStack, HStack } from "../elements/LayoutPrimitives";
+import { useState } from "react";
 import { fetchEndpoint } from "../../lib/appConfig";
-import { LandingHeader } from "./LandingHeader";
+import { styled } from "../../tokens/stitches.config";
+import { Box, HStack, VStack } from "../elements/LayoutPrimitives";
 import { LandingFooter } from "./LandingFooter";
+import { LandingHeader } from "./LandingHeader";
 
 type DataManagementProps = {
     lang?: "en" | "zh";
@@ -272,8 +272,8 @@ export function DataManagement({ lang = "en" }: DataManagementProps): JSX.Elemen
         },
         dataDelete: {
             title: "删除数据",
-            description: "永久删除您在Ruminer中的所有个人数据。**此操作无法撤销。**",
-            warningText: "**警告：**此操作将永久删除您的所有数据，包括保存的内容、标签、搜索历史和偏好设置。此操作无法撤销。",
+            description: "永久删除您在Ruminer中的所有个人数据。<strong>此操作无法撤销。</strong>",
+            warningText: "<strong>警告：</strong>此操作将永久删除您的所有数据，包括保存的内容、标签、搜索历史和偏好设置。此操作无法撤销。",
             emailLabel: "请输入您的邮箱以确认删除",
             confirmEmailLabel: "再次输入您的邮箱",
             buttonText: "删除我的数据",
@@ -281,8 +281,8 @@ export function DataManagement({ lang = "en" }: DataManagementProps): JSX.Elemen
         },
         accountDelete: {
             title: "删除账户",
-            description: "永久删除您的Ruminer账户和所有相关数据。**此操作无法撤销。**",
-            warningText: "**警告：**此操作将永久删除您的账户和所有相关数据。您将无法恢复对Ruminer服务的访问。",
+            description: "永久删除您的Ruminer账户和所有相关数据。<strong>此操作无法撤销。</strong>",
+            warningText: "<strong>警告：</strong>此操作将永久删除您的账户和所有相关数据。您将无法恢复对Ruminer服务的访问。",
             buttonText: "删除我的账户",
             successMessage: "账户删除请求已提交。您的账户和所有数据将在72小时内被永久删除。",
         },
@@ -306,8 +306,8 @@ export function DataManagement({ lang = "en" }: DataManagementProps): JSX.Elemen
         },
         dataDelete: {
             title: "Delete Your Data",
-            description: "Permanently delete all your personal data from Ruminer. **This action cannot be undone.**",
-            warningText: "**Warning:** This will permanently delete all your data including saved content, tags, search history, and preferences. This action cannot be undone.",
+            description: "Permanently delete all your personal data from Ruminer. <strong>This action cannot be undone.</strong>",
+            warningText: "<strong>Warning:</strong> This will permanently delete all your data including saved content, tags, search history, and preferences. This action cannot be undone.",
             emailLabel: "Enter your email to confirm data deletion",
             confirmEmailLabel: "Confirm your email",
             buttonText: "Delete My Data",
@@ -315,8 +315,8 @@ export function DataManagement({ lang = "en" }: DataManagementProps): JSX.Elemen
         },
         accountDelete: {
             title: "Delete Your Account",
-            description: "Permanently delete your Ruminer account and all associated data. **This action cannot be undone.**",
-            warningText: "**Warning:** This will permanently delete your account and all associated data. You will lose access to Ruminer services forever.",
+            description: "Permanently delete your Ruminer account and all associated data. <strong>This action cannot be undone.</strong>",
+            warningText: "<strong>Warning:</strong> This will permanently delete your account and all associated data. You will lose access to Ruminer services forever.",
             buttonText: "Delete My Account",
             successMessage: "Account deletion request submitted. Your account and all data will be permanently deleted within 72 hours.",
         },

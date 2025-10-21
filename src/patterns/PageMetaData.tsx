@@ -58,7 +58,7 @@ export function PageMetaData(props: PageMetaDataProps): JSX.Element {
         href="/apple-touch-icon.png"
       />
 
-      {/* TODO - update these DIs */}
+      {/* TODO - update these IDs */}
       <meta name="apple-mobile-web-app-title" content="Ruminer" />
       <meta property="fb:app_id" content="3584400838451823" />
       <meta name="twitter:card" content="summary_large_image" />

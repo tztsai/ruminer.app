@@ -2,6 +2,8 @@
 
 *September 15, 2025*
 
+**By downloading, accessing, or using the Ruminer application or services (the "Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use the Service.**
+
 ## Scope
 
 These terms govern your use of the Ruminer mobile and desktop applications (the "App"), the Ruminer website, and any related services (collectively, the "Service").
@@ -20,7 +22,7 @@ Your permission to use the Service is subject to the following conditions:
 
 - You must be at least thirteen years old.
 - You may no longer use the Service if the operator tells you that you may not.
-- You must follow Acceptable Use and Content Standards.
+- You must follow our Acceptable Use and Content Standards. There is a zero-tolerance policy for objectionable content and abusive users.
 
 ### Acceptable Use
 
@@ -36,13 +38,18 @@ Your permission to use the Service is subject to the following conditions:
 - You may not disable, avoid, or circumvent any security or access restrictions of the Service.
 - You may not strain infrastructure of the Service with an unreasonable volume of requests, or requests designed to impose an unreasonable load on information systems the operator uses to provide the Service.
 - You may not impersonate others through the Service.
+- You may not harass, threaten, defame, or otherwise abuse others.
 - You may not encourage or help anyone in violation of these terms.
 
 ### Content Standards
 
-- You may not use the Service to process, store, or share content that is illegal, offensive, or otherwise harmful to others. This includes content that is harassing, inappropriate, or abusive.
-- You may not use the Service to process content that violates the law, infringes anyone's intellectual property rights, violates anyone's privacy, or breaches agreements you have with others.
-- You may not submit content to the Service containing malicious computer code, such as computer viruses or spyware.
+The operator has a zero-tolerance policy for objectionable content. You may not use the Service to process, store, or share any content that is illegal, offensive, or otherwise harmful to others. This includes, but is not limited to, content that is:
+
+- Defamatory, obscene, pornographic, vulgar, or offensive.
+- Harassing, inappropriate, abusive, or threatening.
+- Promoting discrimination, bigotry, racism, hatred, harassment, or harm against any individual or group.
+- Violating the law, infringing anyone's intellectual property rights, violating anyone's privacy, or breaching agreements you have with others.
+- Containing malicious computer code, such as computer viruses or spyware.
 - You may not use the Service to process content as a mere placeholder to hold a particular address, user name, or other unique identifier.
 - You may not use the Service to disclose information from or about others that you don't have the right to disclose.
 
@@ -60,7 +67,7 @@ To create an account, you must provide some information about yourself. If you c
 
 You agree to be responsible for everything done with your account, whether authorized by you or not, until you either close your account or notify the operator that your account has been compromised. You agree to notify the operator immediately if you suspect your account has been compromised. You agree to select a secure password for your account, and keep it secret.
 
-The operator may restrict, suspend, or close your account on the Service according to its policy for handling copyright-related takedown requests, or if the operator reasonably believes that you've breached these terms.
+The operator may restrict, suspend, or close your account on the Service if the operator reasonably believes that you have breached these terms. The operator reserves the right to terminate, without warning, any account found to be posting objectionable content or engaging in abusive behavior.
 
 ### Your Content
 
