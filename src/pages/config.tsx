@@ -39,13 +39,29 @@ export default function ConfigPage(): JSX.Element {
     return process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE;
   }, []);
 
+  const apiTimeoutMs = useMemo(() => {
+    const raw = process.env.NEXT_PUBLIC_API_TIMEOUT_MS;
+    const parsed = raw ? Number(raw) : NaN;
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 15000;
+  }, []);
+
+  const fetchWithTimeout = useCallback(async (input: RequestInfo | URL, init: RequestInit = {}) => {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), apiTimeoutMs);
+    try {
+      return await fetch(input, { ...init, signal: controller.signal });
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }, [apiTimeoutMs]);
+
   const checkConfigOnly = useCallback(async () => {
     if (!token) {
       setStatus('setup');
       return;
     }
     try {
-      const res = await fetch(`${apiBase}/config`, {
+      const res = await fetchWithTimeout(`${apiBase}/config`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -55,10 +71,15 @@ export default function ConfigPage(): JSX.Element {
       } else {
         setStatus('setup');
       }
-    } catch {
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        setError('请求超时：服务暂时无响应，请稍后重试');
+        setStatus('error');
+        return;
+      }
       setStatus('setup');
     }
-  }, [apiBase, token]);
+  }, [apiBase, fetchWithTimeout, token]);
 
   const handleSetupStatus = useCallback((data: SetupData) => {
     setSetup(data);
@@ -101,7 +122,7 @@ export default function ConfigPage(): JSX.Element {
 
   const checkStatus = useCallback(async (currentToken: string) => {
     try {
-      const res = await fetch(`${apiBase}/config`, {
+      const res = await fetchWithTimeout(`${apiBase}/config`, {
         headers: { 'Authorization': `Bearer ${currentToken}` }
       });
 
@@ -120,11 +141,16 @@ export default function ConfigPage(): JSX.Element {
         // New user, show setup
         setStatus('setup');
       }
-    } catch {
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        setError('请求超时：服务暂时无响应，请稍后重试');
+        setStatus('error');
+        return;
+      }
       setError('网络错误，请重试');
       setStatus('error');
     }
-  }, [apiBase, handleConfigStatus, handleSetupStatus]);
+  }, [apiBase, fetchWithTimeout, handleConfigStatus, handleSetupStatus]);
 
   // Initial load: parse token and fetch status once
   useEffect(() => {
@@ -180,7 +206,7 @@ export default function ConfigPage(): JSX.Element {
     setSaving(true);
 
     try {
-      const res = await fetch(`${apiBase}/config`, {
+      const res = await fetchWithTimeout(`${apiBase}/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +226,11 @@ export default function ConfigPage(): JSX.Element {
         const err = await res.json();
         alert(err.error || '保存失败，请重试');
       }
-    } catch {
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        alert('请求超时：服务暂时无响应，请稍后重试');
+        return;
+      }
       alert('网络错误，请重试');
     } finally {
       setSaving(false);
