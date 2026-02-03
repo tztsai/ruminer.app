@@ -1,19 +1,22 @@
 import Head from 'next/head';
 import { useEffect, useState, useCallback } from 'react';
 
-const API_BASE = 'https://api.ruminer.app';
+const API_BASE = 'https://api.atmaware.cn';
 
 interface ConfigData {
   platform?: string;
   github_repo?: string;
   github_path?: string;
+  oauthUrl?: string;
+  isNewUser?: boolean;
 }
 
 interface SetupData {
   status: string;
-  githubInstallUrl?: string;
+  oauthUrl?: string;
   repoFullName?: string;
   error?: string;
+  isNewUser?: boolean;
 }
 
 export default function ConfigPage(): JSX.Element {
@@ -33,24 +36,19 @@ export default function ConfigPage(): JSX.Element {
 
   const checkStatus = useCallback(async (currentToken: string) => {
     try {
-      // First try setup status (for GitHub App flow)
-      const setupRes = await fetch(`${API_BASE}/setup/status?token=${currentToken}`);
-
-      if (setupRes.ok) {
-        const setupData: SetupData = await setupRes.json();
-        handleSetupStatus(setupData, currentToken);
-        return;
-      }
-
-      // Fall back to config API
-      const configRes = await fetch(`${API_BASE}/config`, {
+      const res = await fetch(`${API_BASE}/config`, {
         headers: { 'Authorization': `Bearer ${currentToken}` }
       });
 
-      if (configRes.ok) {
-        const configData: ConfigData = await configRes.json();
-        handleConfigStatus(configData);
-      } else if (configRes.status === 401) {
+      if (res.ok) {
+        const data: ConfigData & SetupData = await res.json();
+        // Check if this is a setup status response
+        if (data.status && ['pending', 'authorizing', 'provisioning', 'completed', 'failed'].includes(data.status)) {
+          handleSetupStatus(data);
+        } else {
+          handleConfigStatus(data);
+        }
+      } else if (res.status === 401) {
         setError('链接已过期，请从微信重新获取');
         setStatus('error');
       } else {
@@ -63,7 +61,7 @@ export default function ConfigPage(): JSX.Element {
     }
   }, []);
 
-  const handleSetupStatus = (data: SetupData, currentToken: string) => {
+  const handleSetupStatus = (data: SetupData) => {
     setSetup(data);
 
     switch (data.status) {
@@ -83,14 +81,18 @@ export default function ConfigPage(): JSX.Element {
         break;
       default:
         // Not a setup session, check config
-        checkConfigOnly(currentToken);
+        checkConfigOnly();
     }
   };
 
-  const checkConfigOnly = async (currentToken: string) => {
+  const checkConfigOnly = async () => {
+    if (!token) {
+      setStatus('setup');
+      return;
+    }
     try {
       const res = await fetch(`${API_BASE}/config`, {
-        headers: { 'Authorization': `Bearer ${currentToken}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
 
       if (res.ok) {
@@ -110,6 +112,10 @@ export default function ConfigPage(): JSX.Element {
       setGithubRepo(data.github_repo);
       setGithubPath(data.github_path || '');
       setStatus('config');
+    } else if (data.isNewUser && data.oauthUrl) {
+      // New user with OAuth available
+      setSetup({ status: 'pending', oauthUrl: data.oauthUrl });
+      setStatus('setup');
     } else {
       setStatus('setup');
     }
@@ -278,7 +284,7 @@ export default function ConfigPage(): JSX.Element {
               <div className="step-number">1</div>
               <div className="step-content">
                 <h3>创建 GitHub 仓库（可选）</h3>
-                <p>首先，（需要先注册一个 GitHub 账号）创建一个 GitHub 仓库作为您的知识库（输入仓库名称并将可见性/Visibility 设为私有/Private即可提交）。您的收藏内容将自动保存于此并由您的守藏史进行搜索、阅览、编辑、整理、汇报等工作。</p>
+                <p>首先，（需要先注册一个 GitHub 账号）创建一个 GitHub 仓库作为您的知识库（输入仓库名称并设置可见性/Visibility即可提交）。您的收藏内容将自动保存于此并由您的守藏史进行搜索、阅览、编辑、整理、汇报等工作。</p>
                 <p style={{ marginTop: '8px' }}>
                   <a href="https://github.com/new" target="_blank" rel="noopener noreferrer">点击创建新仓库 &rarr;</a>
                 </p>
@@ -289,12 +295,12 @@ export default function ConfigPage(): JSX.Element {
               <div className="step-number">2</div>
               <div className="step-content">
                 <h3>授权守藏史 Ruminer 访问</h3>
-                <p>点击下方按钮，授权您的守藏史访问并管理您的个人知识库。选择只安装于部分仓库，并在仓库选项列表中搜索您刚才创建的仓库，点击添加之后即可安装。</p>
+                <p>点击下方按钮，授权您的守藏史访问并管理您的个人知识库。在仓库选项列表中搜索您刚才创建的仓库，点击添加之后即可安装（如添加多个，只有第一个会被用作知识库）。</p>
               </div>
             </div>
 
-            {setup?.githubInstallUrl && (
-              <a href={setup.githubInstallUrl} className="btn btn-secondary">
+            {setup?.oauthUrl && (
+              <a href={setup.oauthUrl} className="btn btn-secondary">
                 <GitHubIcon />
                 授权 GitHub 访问
               </a>
@@ -394,8 +400,8 @@ export default function ConfigPage(): JSX.Element {
               </button>
             </form>
 
-            {setup?.githubInstallUrl && (
-              <a href={setup.githubInstallUrl} className="btn btn-secondary">
+            {(setup?.oauthUrl || config?.oauthUrl) && (
+              <a href={setup?.oauthUrl || config?.oauthUrl} className="btn btn-secondary">
                 <GitHubIcon />
                 重新授权 GitHub
               </a>
