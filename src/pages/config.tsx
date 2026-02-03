@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-const API_BASE = 'https://api.atmaware.cn';
+const DEFAULT_API_BASE = 'https://api.atmaware.cn';
 
 interface ConfigData {
   github_repo?: string;
@@ -14,6 +14,7 @@ interface SetupData {
   status: string;
   installUrl?: string;
   repoFullName?: string;
+  agentId?: string;
   error?: string;
   isNewUser?: boolean;
 }
@@ -33,9 +34,74 @@ export default function ConfigPage(): JSX.Element {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
+  const apiBase = useMemo(() => {
+    // Allow deployments to override API host without code changes
+    return process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE;
+  }, []);
+
+  const checkConfigOnly = useCallback(async () => {
+    if (!token) {
+      setStatus('setup');
+      return;
+    }
+    try {
+      const res = await fetch(`${apiBase}/config`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        const data: ConfigData = await res.json();
+        handleConfigStatus(data);
+      } else {
+        setStatus('setup');
+      }
+    } catch {
+      setStatus('setup');
+    }
+  }, [apiBase, token]);
+
+  const handleSetupStatus = useCallback((data: SetupData) => {
+    setSetup(data);
+
+    switch (data.status) {
+      case 'pending':
+        setStatus('setup');
+        break;
+      case 'authorizing':
+      case 'provisioning':
+        setStatus('processing');
+        break;
+      case 'completed':
+        setStatus('success');
+        break;
+      case 'failed':
+        setError(data.error || '设置失败，请重试');
+        setStatus('error');
+        break;
+      default:
+        // Not a setup session, check config
+        void checkConfigOnly();
+    }
+  }, [checkConfigOnly]);
+
+  const handleConfigStatus = useCallback((data: ConfigData) => {
+    setConfig(data);
+    if (data.github_repo) {
+      setGithubRepo(data.github_repo);
+      setGithubPath(data.github_path || '');
+      setStatus('config');
+    } else if (data.isNewUser && data.installUrl) {
+      // New user with OAuth available
+      setSetup({ status: 'pending', installUrl: data.installUrl });
+      setStatus('setup');
+    } else {
+      setStatus('setup');
+    }
+  }, []);
+
   const checkStatus = useCallback(async (currentToken: string) => {
     try {
-      const res = await fetch(`${API_BASE}/config`, {
+      const res = await fetch(`${apiBase}/config`, {
         headers: { 'Authorization': `Bearer ${currentToken}` }
       });
 
@@ -58,68 +124,9 @@ export default function ConfigPage(): JSX.Element {
       setError('网络错误，请重试');
       setStatus('error');
     }
-  }, []);
+  }, [apiBase, handleConfigStatus, handleSetupStatus]);
 
-  const handleSetupStatus = (data: SetupData) => {
-    setSetup(data);
-
-    switch (data.status) {
-      case 'pending':
-        setStatus('setup');
-        break;
-      case 'authorizing':
-      case 'provisioning':
-        setStatus('processing');
-        break;
-      case 'completed':
-        setStatus('success');
-        break;
-      case 'failed':
-        setError(data.error || '设置失败，请重试');
-        setStatus('error');
-        break;
-      default:
-        // Not a setup session, check config
-        checkConfigOnly();
-    }
-  };
-
-  const checkConfigOnly = async () => {
-    if (!token) {
-      setStatus('setup');
-      return;
-    }
-    try {
-      const res = await fetch(`${API_BASE}/config`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (res.ok) {
-        const data: ConfigData = await res.json();
-        handleConfigStatus(data);
-      } else {
-        setStatus('setup');
-      }
-    } catch {
-      setStatus('setup');
-    }
-  };
-
-  const handleConfigStatus = (data: ConfigData) => {
-    setConfig(data);
-    if (data.github_repo) {
-      setGithubRepo(data.github_repo);
-      setGithubPath(data.github_path || '');
-      setStatus('config');
-    } else if (data.isNewUser && data.installUrl) {
-      // New user with OAuth available
-      setSetup({ status: 'pending', installUrl: data.installUrl });
-      setStatus('setup');
-    } else {
-      setStatus('setup');
-    }
-  };
-
+  // Initial load: parse token and fetch status once
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const t = params.get('token');
@@ -131,25 +138,27 @@ export default function ConfigPage(): JSX.Element {
     }
 
     setToken(t);
-    checkStatus(t);
+    void checkStatus(t);
+  }, [checkStatus]);
 
-    // Poll for status changes if in processing state
+  // Poll only while processing
+  useEffect(() => {
+    if (!token || status !== 'processing') return;
+
     const interval = setInterval(() => {
-      if (status === 'processing') {
-        checkStatus(t);
-      }
+      void checkStatus(token);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [checkStatus, status]);
+  }, [checkStatus, status, token]);
 
   const saveConfig = async (e: React.FormEvent, isSetup: boolean) => {
     e.preventDefault();
     if (!token) return;
 
     const tokenValue = isSetup ? githubToken : configGithubToken;
-    const repoValue = isSetup ? githubRepo : githubRepo;
-    const pathValue = isSetup ? githubPath : githubPath;
+    const repoValue = githubRepo;
+    const pathValue = githubPath;
 
     const data: Record<string, string> = {
       github_repo: repoValue.trim(),
@@ -171,7 +180,7 @@ export default function ConfigPage(): JSX.Element {
     setSaving(true);
 
     try {
-      const res = await fetch(`${API_BASE}/config`, {
+      const res = await fetch(`${apiBase}/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,6 +191,7 @@ export default function ConfigPage(): JSX.Element {
 
       if (res.ok) {
         if (isSetup) {
+          setSetup({ status: 'completed', repoFullName: data.github_repo });
           setStatus('success');
         } else {
           setMessage({ text: '配置已保存！', type: 'success' });
