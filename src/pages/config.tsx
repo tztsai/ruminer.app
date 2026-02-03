@@ -1,19 +1,18 @@
 import Head from 'next/head';
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const API_BASE = 'https://api.atmaware.cn';
 
 interface ConfigData {
-  platform?: string;
   github_repo?: string;
   github_path?: string;
-  oauthUrl?: string;
+  installUrl?: string;
   isNewUser?: boolean;
 }
 
 interface SetupData {
   status: string;
-  oauthUrl?: string;
+  installUrl?: string;
   repoFullName?: string;
   error?: string;
   isNewUser?: boolean;
@@ -112,9 +111,9 @@ export default function ConfigPage(): JSX.Element {
       setGithubRepo(data.github_repo);
       setGithubPath(data.github_path || '');
       setStatus('config');
-    } else if (data.isNewUser && data.oauthUrl) {
+    } else if (data.isNewUser && data.installUrl) {
       // New user with OAuth available
-      setSetup({ status: 'pending', oauthUrl: data.oauthUrl });
+      setSetup({ status: 'pending', installUrl: data.installUrl });
       setStatus('setup');
     } else {
       setStatus('setup');
@@ -154,7 +153,7 @@ export default function ConfigPage(): JSX.Element {
 
     const data: Record<string, string> = {
       github_repo: repoValue.trim(),
-      github_path: pathValue.trim() || 'articles/'
+      github_path: pathValue.trim() || 'bookmarks/'
     };
 
     if (tokenValue.trim()) {
@@ -299,8 +298,8 @@ export default function ConfigPage(): JSX.Element {
               </div>
             </div>
 
-            {setup?.oauthUrl && (
-              <a href={setup.oauthUrl} className="btn btn-secondary">
+            {setup?.installUrl && (
+              <a href={setup.installUrl} className="btn btn-secondary">
                 <GitHubIcon />
                 授权 GitHub 访问
               </a>
@@ -400,8 +399,8 @@ export default function ConfigPage(): JSX.Element {
               </button>
             </form>
 
-            {(setup?.oauthUrl || config?.oauthUrl) && (
-              <a href={setup?.oauthUrl || config?.oauthUrl} className="btn btn-secondary">
+            {(setup?.installUrl || config?.installUrl) && (
+              <a href={setup?.installUrl || config?.installUrl} className="btn btn-secondary">
                 <GitHubIcon />
                 重新授权 GitHub
               </a>
