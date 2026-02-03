@@ -169,7 +169,7 @@ export function LandingHeader({ lang }: { lang: "en" | "zh" }): JSX.Element {
   // Language options
   const languages = [
     { code: "en", label: "English" },
-    { code: "zh", label: "简体中文" },
+    { code: "zh", label: "中文" },
   ];
 
   // Set client flag on mount to prevent hydration mismatch
