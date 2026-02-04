@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const DEFAULT_API_BASE = 'https://api.atmaware.cn';
 
@@ -219,16 +221,16 @@ export default function SummaryPage() {
 		}, 100);
 	};
 
-	// Format text for display (convert newlines to paragraphs)
+	// Format text for display with markdown rendering
 	const formatText = (text: string) => {
 		if (!text) return null;
-		return text.split('\n\n')
-			.filter(p => p.trim())
-			.map((p, i) => (
-				<p key={i} dangerouslySetInnerHTML={{
-					__html: p.replace(/\n/g, '<br>')
-				}} />
-			));
+		return (
+			<div className="markdown-content">
+				<ReactMarkdown remarkPlugins={[remarkGfm]}>
+					{text}
+				</ReactMarkdown>
+			</div>
+		);
 	};
 
 	// Format date for display
@@ -306,8 +308,72 @@ export default function SummaryPage() {
 					min-height: 100px;
 				}
 
-				.summary :global(p) {
+				/* Markdown content styles */
+				.markdown-content :global(p) {
 					margin-bottom: 1em;
+					line-height: 1.8;
+				}
+
+				.markdown-content :global(h1),
+				.markdown-content :global(h2),
+				.markdown-content :global(h3) {
+					font-weight: 600;
+					margin-top: 1.2em;
+					margin-bottom: 0.6em;
+					line-height: 1.3;
+				}
+
+				.markdown-content :global(h1) { font-size: 1.5em; }
+				.markdown-content :global(h2) { font-size: 1.3em; }
+				.markdown-content :global(h3) { font-size: 1.1em; }
+
+				.markdown-content :global(ul),
+				.markdown-content :global(ol) {
+					margin-bottom: 1em;
+					padding-left: 1.8em;
+				}
+
+				.markdown-content :global(li) {
+					margin-bottom: 0.4em;
+				}
+
+				.markdown-content :global(code) {
+					background: #f4f4f4;
+					padding: 3px 6px;
+					border-radius: 4px;
+					font-size: 0.9em;
+					font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+				}
+
+				.markdown-content :global(pre) {
+					background: #f4f4f4;
+					padding: 16px;
+					border-radius: 8px;
+					overflow-x: auto;
+					margin-bottom: 1em;
+				}
+
+				.markdown-content :global(pre code) {
+					background: transparent;
+					padding: 0;
+					border-radius: 0;
+				}
+
+				.markdown-content :global(blockquote) {
+					border-left: 4px solid #ddd;
+					padding-left: 1em;
+					color: #666;
+					font-style: italic;
+					margin: 1em 0;
+				}
+
+				.markdown-content :global(a) {
+					color: #667eea;
+					text-decoration: none;
+				}
+
+				.markdown-content :global(a:hover) {
+					text-decoration: underline;
 				}
 
 				.loading {
@@ -449,6 +515,17 @@ export default function SummaryPage() {
 					}
 					.summary {
 						color: #e5e5e5;
+					}
+					.markdown-content :global(code) {
+						background: #3a3a3a;
+						color: #e5e5e5;
+					}
+					.markdown-content :global(pre) {
+						background: #3a3a3a;
+					}
+					.markdown-content :global(blockquote) {
+						border-left-color: #555;
+						color: #aaa;
 					}
 					.loading {
 						color: #a0a0a0;

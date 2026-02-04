@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import { useEffect, useMemo, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const DEFAULT_API_BASE = 'https://api.atmaware.cn';
 
@@ -143,15 +145,14 @@ export default function ChatPage() {
 	// Check if expired
 	const isExpired = conversation ? Date.now() > conversation.expiresAt : false;
 
-	// Escape HTML for message content
-	const escapeHtml = (text: string) => {
-		return text
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;')
-			.replace(/"/g, '&quot;')
-			.replace(/'/g, '&#039;');
-	};
+	// Component for rendering markdown content in messages
+	const MarkdownMessage = ({ content, isIncoming = false }: { content: string; isIncoming?: boolean }) => (
+		<div className={isIncoming ? 'markdown-message-incoming' : 'markdown-message-outgoing'}>
+			<ReactMarkdown remarkPlugins={[remarkGfm]}>
+				{content}
+			</ReactMarkdown>
+		</div>
+	);
 
 	return (
 		<>
@@ -228,7 +229,6 @@ export default function ChatPage() {
 				.message-content {
 					padding: 12px 16px;
 					border-radius: 12px;
-					white-space: pre-wrap;
 					word-wrap: break-word;
 					line-height: 1.6;
 					font-size: 15px;
@@ -250,6 +250,116 @@ export default function ChatPage() {
 					color: #333;
 					align-self: flex-start;
 					margin-right: 40px;
+				}
+
+				/* Markdown styles for chat messages */
+				.markdown-message-incoming :global(p),
+				.markdown-message-outgoing :global(p) {
+					margin: 0;
+				}
+
+				.markdown-message-incoming :global(p:not(:last-child)),
+				.markdown-message-outgoing :global(p:not(:last-child)) {
+					margin-bottom: 0.5em;
+				}
+
+				.markdown-message-incoming :global(ul),
+				.markdown-message-incoming :global(ol),
+				.markdown-message-outgoing :global(ul),
+				.markdown-message-outgoing :global(ol) {
+					margin: 0.5em 0;
+					padding-left: 1.2em;
+				}
+
+				.markdown-message-incoming :global(li),
+				.markdown-message-outgoing :global(li) {
+					margin-bottom: 0.2em;
+				}
+
+				.markdown-message-incoming :global(code) {
+					background: rgba(0, 0, 0, 0.08);
+					padding: 2px 6px;
+					border-radius: 3px;
+					font-size: 0.9em;
+					font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+				}
+
+				.markdown-message-outgoing :global(code) {
+					background: rgba(255, 255, 255, 0.2);
+					padding: 2px 6px;
+					border-radius: 3px;
+					font-size: 0.9em;
+					font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+				}
+
+				.markdown-message-incoming :global(pre) {
+					background: rgba(0, 0, 0, 0.06);
+					padding: 10px;
+					border-radius: 6px;
+					overflow-x: auto;
+					margin: 0.5em 0;
+				}
+
+				.markdown-message-incoming :global(pre code) {
+					background: transparent;
+					padding: 0;
+				}
+
+				.markdown-message-outgoing :global(pre) {
+					background: rgba(255, 255, 255, 0.15);
+					padding: 10px;
+					border-radius: 6px;
+					overflow-x: auto;
+					margin: 0.5em 0;
+				}
+
+				.markdown-message-outgoing :global(pre code) {
+					background: transparent;
+					padding: 0;
+				}
+
+				.markdown-message-incoming :global(h1),
+				.markdown-message-incoming :global(h2),
+				.markdown-message-incoming :global(h3),
+				.markdown-message-outgoing :global(h1),
+				.markdown-message-outgoing :global(h2),
+				.markdown-message-outgoing :global(h3) {
+					font-weight: 600;
+					margin-top: 0.5em;
+					margin-bottom: 0.25em;
+				}
+
+				.markdown-message-incoming :global(h1) { font-size: 1.2em; }
+				.markdown-message-incoming :global(h2) { font-size: 1.1em; }
+				.markdown-message-incoming :global(h3) { font-size: 1em; }
+				.markdown-message-outgoing :global(h1) { font-size: 1.2em; }
+				.markdown-message-outgoing :global(h2) { font-size: 1.1em; }
+				.markdown-message-outgoing :global(h3) { font-size: 1em; }
+
+				.markdown-message-incoming :global(blockquote) {
+					border-left: 3px solid #ccc;
+					padding-left: 0.8em;
+					font-style: italic;
+					margin: 0.5em 0;
+					opacity: 0.8;
+				}
+
+				.markdown-message-outgoing :global(blockquote) {
+					border-left: 3px solid rgba(255, 255, 255, 0.4);
+					padding-left: 0.8em;
+					font-style: italic;
+					margin: 0.5em 0;
+					opacity: 0.9;
+				}
+
+				.markdown-message-incoming :global(a) {
+					color: #4CAF50;
+					text-decoration: none;
+				}
+
+				.markdown-message-outgoing :global(a) {
+					color: #fff;
+					text-decoration: underline;
 				}
 
 				.loading {
@@ -387,6 +497,20 @@ export default function ChatPage() {
 						background: #3a3a3a;
 						color: #e5e5e5;
 					}
+					.markdown-message-incoming :global(code) {
+						background: rgba(255, 255, 255, 0.1);
+						color: #e5e5e5;
+					}
+					.markdown-message-incoming :global(pre) {
+						background: rgba(255, 255, 255, 0.08);
+					}
+					.markdown-message-incoming :global(blockquote) {
+						border-left-color: #555;
+						opacity: 0.8;
+					}
+					.markdown-message-incoming :global(a) {
+						color: #81c784;
+					}
 					.loading {
 						color: #a0a0a0;
 					}
@@ -447,24 +571,18 @@ export default function ChatPage() {
 									<div className="message-role">
 										{msg.role === 'user' ? '你' : 'AI 助手'}
 									</div>
-									<div
-										className="message-content"
-										dangerouslySetInnerHTML={{
-											__html: escapeHtml(msg.content).replace(/\n/g, '<br>')
-										}}
-									/>
+									<div className="message-content">
+										<MarkdownMessage content={msg.content} isIncoming={msg.role === 'assistant'} />
+									</div>
 								</div>
 							))}
 
 							{continueResponse && (
 								<div className="message assistant-message">
 									<div className="message-role">AI 助手 (新回复)</div>
-									<div
-										className="message-content"
-										dangerouslySetInnerHTML={{
-											__html: escapeHtml(continueResponse).replace(/\n/g, '<br>')
-										}}
-									/>
+									<div className="message-content">
+										<MarkdownMessage content={continueResponse} isIncoming={true} />
+									</div>
 								</div>
 							)}
 						</div>
