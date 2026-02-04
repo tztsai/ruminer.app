@@ -38,7 +38,7 @@ export default function SummaryPage() {
 		return DEFAULT_API_BASE;
 	}, []);
 	const routerId = typeof window !== 'undefined'
-		? window.location.pathname.split('/').pop() || ''
+		? window.location.pathname.split('/').filter(p => p).pop() || ''
 		: '';
 	const cacheKey = routerId;
 
