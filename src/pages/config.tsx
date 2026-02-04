@@ -32,6 +32,7 @@ export default function ConfigPage(): JSX.Element {
   const [githubPath, setGithubPath] = useState('');
   const [configGithubToken, setConfigGithubToken] = useState('');
   const [saving, setSaving] = useState(false);
+  const [oneClickLoading, setOneClickLoading] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   const apiBase = useMemo(() => {
@@ -294,6 +295,38 @@ export default function ConfigPage(): JSX.Element {
 
   const processingText = getProcessingText();
 
+  const handleOneClickCreateRepo = async () => {
+    if (!token || oneClickLoading) return;
+    setOneClickLoading(true);
+    setMessage(null);
+
+    try {
+      const res = await fetchWithTimeout(`${apiBase}/config/one-click`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        const data: SetupData = await res.json();
+        handleSetupStatus(data);
+      } else if (res.status === 401) {
+        setError('链接已过期，请从微信重新获取');
+        setStatus('error');
+      } else {
+        const err = await res.json();
+        setMessage({ text: err?.error || '创建失败，请重试', type: 'error' });
+      }
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        setMessage({ text: '请求超时：服务暂时无响应，请稍后重试', type: 'error' });
+      } else {
+        setMessage({ text: '网络错误，请重试', type: 'error' });
+      }
+    } finally {
+      setOneClickLoading(false);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -364,6 +397,12 @@ export default function ConfigPage(): JSX.Element {
         {/* Setup State */}
         {status === 'setup' && (
           <div className="content">
+            <button className="btn btn-primary" onClick={handleOneClickCreateRepo} disabled={oneClickLoading}>
+              {oneClickLoading ? '正在创建...' : '一键创建知识仓库'}
+            </button>
+
+            <div className="divider">或</div>
+
             <div className="step">
               <div className="step-number">1</div>
               <div className="step-content">
