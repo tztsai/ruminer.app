@@ -1,4 +1,4 @@
-import createMDX from '@next/mdx'
+import createMDX from '@next/mdx';
 
 const ContentSecurityPolicy = `
   default-src 'self';
@@ -6,7 +6,7 @@ const ContentSecurityPolicy = `
   style-src 'self' 'unsafe-inline';
   img-src 'self' data: https:;
   font-src 'self' data:;
-  connect-src 'self' https://api.atmaware.cn;
+  connect-src 'self' https://api.atmaware.cn http://localhost:8080;
   frame-src 'self';
 `;
 

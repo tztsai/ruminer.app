@@ -35,8 +35,17 @@ export default function ConfigPage(): JSX.Element {
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   const apiBase = useMemo(() => {
-    // Allow deployments to override API host without code changes
-    return process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE;
+    // Allow deployments to override API host without code changes.
+    // For local dev (when env isn't set), default to local backend.
+    const configured = process.env.NEXT_PUBLIC_API_BASE;
+    if (configured) return configured;
+    if (typeof window !== 'undefined') {
+      const host = window.location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1') {
+        return 'http://localhost:8080';
+      }
+    }
+    return DEFAULT_API_BASE;
   }, []);
 
   const apiTimeoutMs = useMemo(() => {
@@ -156,16 +165,52 @@ export default function ConfigPage(): JSX.Element {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const t = params.get('token');
+    const devOpenid = params.get('dev_openid') || params.get('openid');
 
     if (!t) {
+      if (devOpenid) {
+        setStatus('loading');
+        void (async () => {
+          try {
+            const res = await fetchWithTimeout(`${apiBase}/config?dev_openid=${encodeURIComponent(devOpenid)}&format=json`);
+            if (!res.ok) {
+              setError('开发模式启动失败，请检查后端服务');
+              setStatus('error');
+              return;
+            }
+            const data = await res.json();
+            if (data?.token) {
+              const nextUrl = new URL(window.location.href);
+              nextUrl.searchParams.set('token', data.token);
+              nextUrl.searchParams.set('installUrl', data.installUrl);
+              nextUrl.searchParams.delete('dev_openid');
+              nextUrl.searchParams.delete('openid');
+              window.location.replace(nextUrl.toString());
+              return;
+            }
+            setError('开发模式启动失败：未返回 token');
+            setStatus('error');
+          } catch (err: any) {
+            console.log('Dev mode error:', err);
+            if (err?.name === 'AbortError') {
+              setError('请求超时：服务暂时无响应，请稍后重试');
+            } else {
+              setError('网络错误，请重试');
+            }
+            setStatus('error');
+          }
+        })();
+        return;
+      }
+
       setError('配置链接无效，请从微信重新获取');
       setStatus('error');
       return;
     }
 
     setToken(t);
-    void checkStatus(t);
-  }, [checkStatus]);
+    checkStatus(t);
+  }, [apiBase, checkStatus, fetchWithTimeout]);
 
   // Poll only while processing
   useEffect(() => {
