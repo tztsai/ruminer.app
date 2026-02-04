@@ -375,7 +375,7 @@ export default function ConfigPage(): JSX.Element {
       <div className="container">
         <div className="header">
           <h1>守藏史 Ruminer</h1>
-          <p>創建您的守藏室（建议点击"在浏览器中打开"）</p>
+          <p>創建您的守藏室</p>
         </div>
 
         {/* Loading State */}
@@ -407,7 +407,7 @@ export default function ConfigPage(): JSX.Element {
               <div className="step-number">1</div>
               <div className="step-content">
                 <h3>创建 GitHub 仓库（可选）</h3>
-                <p>首先，（需要先注册一个 GitHub 账号）创建一个 GitHub 仓库作为您的知识库（输入仓库名称并设置可见性/Visibility即可提交）。您的收藏内容将自动保存于此并由您的守藏史进行搜索、阅览、编辑、整理、汇报等工作。</p>
+                <p>首先，（建议先点击"在浏览器中打开"）创建一个 GitHub 仓库作为您的知识库（输入仓库名称并设置可见性/Visibility即可提交）。您的收藏内容将自动保存于此并由您的守藏史进行搜索、阅览、编辑、整理、汇报等工作。</p>
                 <p style={{ marginTop: '8px' }}>
                   <a href="https://github.com/new" target="_blank" rel="noopener noreferrer">点击创建新仓库 &rarr;</a>
                 </p>
