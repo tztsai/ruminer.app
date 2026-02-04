@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
 import Head from 'next/head';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const DEFAULT_API_BASE = 'https://api.atmaware.cn';
 
@@ -476,7 +476,7 @@ export default function SummaryPage() {
 				</div>
 
 				<div className="footer">
-					Powered by <a href="https://www.ruminer.app" target="_blank">Ruminer</a> · Made with Moltbot
+					Powered by <a href="https://www.ruminer.app" target="_blank">Ruminer</a> · Made with ❤️
 				</div>
 			</div>
 		</>
