@@ -5,7 +5,6 @@ const DEFAULT_API_BASE = 'https://api.atmaware.cn';
 
 interface ConfigData {
   github_repo?: string;
-  github_path?: string;
   installUrl?: string;
   isNewUser?: boolean;
 }
@@ -29,7 +28,6 @@ export default function ConfigPage(): JSX.Element {
   // Form states
   const [githubToken, setGithubToken] = useState('');
   const [githubRepo, setGithubRepo] = useState('');
-  const [githubPath, setGithubPath] = useState('');
   const [configGithubToken, setConfigGithubToken] = useState('');
   const [saving, setSaving] = useState(false);
   const [oneClickLoading, setOneClickLoading] = useState(false);
@@ -119,7 +117,6 @@ export default function ConfigPage(): JSX.Element {
     setConfig(data);
     if (data.github_repo) {
       setGithubRepo(data.github_repo);
-      setGithubPath(data.github_path || '');
       setStatus('config');
     } else if (data.isNewUser && data.installUrl) {
       // New user with OAuth available
@@ -230,11 +227,9 @@ export default function ConfigPage(): JSX.Element {
 
     const tokenValue = isSetup ? githubToken : configGithubToken;
     const repoValue = githubRepo;
-    const pathValue = githubPath;
 
     const data: Record<string, string> = {
       github_repo: repoValue.trim(),
-      github_path: pathValue.trim() || 'bookmarks/'
     };
 
     if (tokenValue.trim()) {
@@ -453,17 +448,6 @@ export default function ConfigPage(): JSX.Element {
                   placeholder="username/articles"
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="githubPath">路径前缀 (可选)</label>
-                <input
-                  type="text"
-                  id="githubPath"
-                  value={githubPath}
-                  onChange={(e) => setGithubPath(e.target.value)}
-                  placeholder="articles/"
-                />
-                <small>例如: articles/ 或 wechat/</small>
-              </div>
               <button type="submit" className="btn btn-primary" disabled={saving}>
                 {saving ? '保存中...' : '保存配置'}
               </button>
@@ -506,16 +490,6 @@ export default function ConfigPage(): JSX.Element {
                   onChange={(e) => setGithubRepo(e.target.value)}
                   placeholder="username/articles"
                   required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="configGithubPath">路径前缀</label>
-                <input
-                  type="text"
-                  id="configGithubPath"
-                  value={githubPath}
-                  onChange={(e) => setGithubPath(e.target.value)}
-                  placeholder="articles/"
                 />
               </div>
               <button type="submit" className="btn btn-primary" disabled={saving}>
