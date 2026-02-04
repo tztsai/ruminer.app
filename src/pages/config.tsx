@@ -375,7 +375,7 @@ export default function ConfigPage(): JSX.Element {
       <div className="container">
         <div className="header">
           <h1>守藏史 Ruminer</h1>
-          <p>配置您的知识库（建议点击"在浏览器中打开"）</p>
+          <p>創建您的守藏室（建议点击"在浏览器中打开"）</p>
         </div>
 
         {/* Loading State */}
