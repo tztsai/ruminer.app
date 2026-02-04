@@ -23,7 +23,6 @@ export default function SummaryPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [isRetrying, setIsRetrying] = useState(false);
 	const abortControllerRef = useRef<AbortController | null>(null);
-	const eventSourceRef = useRef<EventSource | null>(null);
 
 	// Determine API base based on environment (same logic as config.tsx)
 	const apiBase = useMemo(() => {
@@ -97,53 +96,108 @@ export default function SummaryPage() {
 			return;
 		}
 
-		// Don't start streaming if already retrying
+		// Don't start streaming if already retrying (wait for retry flag to reset)
 		if (isRetrying) {
 			return;
 		}
 
-		// Close any existing connection
-		if (eventSourceRef.current) {
-			eventSourceRef.current.close();
+		// Abort any existing request
+		if (abortControllerRef.current) {
+			abortControllerRef.current.abort();
 		}
 
-		const eventSource = new EventSource(streamUrl);
-		eventSourceRef.current = eventSource;
+		// Use fetch with ReadableStream for better control
+		// Start from current streamedContent (will be empty if retrying)
+		let accumulated = streamedContent;
+		const abortController = new AbortController();
+		abortControllerRef.current = abortController;
 
-		eventSource.onmessage = (e) => {
-			// Check for [DONE] signal
-			if (e.data === '[DONE]') {
-				eventSource.close();
-				setLoading(false);
-				return;
-			}
-
+		const startStreaming = async () => {
 			try {
-				const data = JSON.parse(e.data);
+				const response = await fetch(streamUrl, {
+					headers: { 'Accept': 'text/event-stream' },
+					signal: abortController.signal,
+				});
 
-				if (data.content) {
-					setStreamedContent(prev => prev + data.content);
-					setLoading(false);
+				if (!response.ok) {
+					throw new Error(`Stream request failed: ${response.status}`);
 				}
 
-				if (data.error) {
-					setError(data.error);
-					setLoading(false);
-					eventSource.close();
+				const reader = response.body?.getReader();
+				if (!reader) {
+					throw new Error('No reader available');
 				}
+
+				const decoder = new TextDecoder();
+				setLoading(false); // Hide loading spinner once stream starts
+
+				const read = async () => {
+					try {
+						const { done, value } = await reader.read();
+
+						if (done) {
+							// Stream complete
+							setLoading(false);
+							return;
+						}
+
+						const text = decoder.decode(value, { stream: true });
+						const lines = text.split('\n');
+
+						for (const line of lines) {
+							if (!line.startsWith('data: ')) continue;
+
+							const data = line.slice(6).trim();
+
+							if (data === '[DONE]') {
+								setLoading(false);
+								return;
+							}
+
+							try {
+								const json = JSON.parse(data);
+
+								if (json.content) {
+									accumulated += json.content;
+									setStreamedContent(accumulated);
+								}
+
+								if (json.error) {
+									setError(json.error);
+									setLoading(false);
+									return;
+								}
+							} catch (e) {
+								// Ignore parse errors for non-JSON lines
+							}
+						}
+
+						read();
+					} catch (err) {
+						if (err instanceof Error && err.name === 'AbortError') {
+							// Request was aborted, ignore
+							return;
+						}
+						setError(err instanceof Error ? err.message : '流式传输失败');
+						setLoading(false);
+					}
+				};
+
+				read();
 			} catch (err) {
-				// Ignore parse errors for non-JSON lines
+				if (err instanceof Error && err.name === 'AbortError') {
+					// Request was aborted, ignore
+					return;
+				}
+				setError(err instanceof Error ? err.message : '连接失败');
+				setLoading(false);
 			}
 		};
 
-		eventSource.onerror = (err) => {
-			console.error('EventSource error:', err);
-			// Don't immediately close - might be a temporary issue
-			// EventSource will automatically retry
-		};
+		startStreaming();
 
 		return () => {
-			eventSource.close();
+			abortController.abort();
 		};
 	}, [summary, streamUrl, isRetrying]);
 
@@ -154,9 +208,9 @@ export default function SummaryPage() {
 		setLoading(true);
 		setIsRetrying(true);
 
-		// Force re-fetch and reconnect
-		if (eventSourceRef.current) {
-			eventSourceRef.current.close();
+		// Abort any existing request
+		if (abortControllerRef.current) {
+			abortControllerRef.current.abort();
 		}
 
 		// Reset retry flag after a short delay to allow reconnection
@@ -167,6 +221,7 @@ export default function SummaryPage() {
 
 	// Format text for display (convert newlines to paragraphs)
 	const formatText = (text: string) => {
+		if (!text) return null;
 		return text.split('\n\n')
 			.filter(p => p.trim())
 			.map((p, i) => (
@@ -248,7 +303,6 @@ export default function SummaryPage() {
 					font-size: 16px;
 					line-height: 1.8;
 					color: #2c3e50;
-					white-space: pre-wrap;
 					min-height: 100px;
 				}
 
@@ -434,27 +488,26 @@ export default function SummaryPage() {
 						<div className="error">
 							<div className="error-title">生成失败</div>
 							<div className="error-message">{error}</div>
-							{maxRetriesReached && <p style={{ marginTop: '8px', fontSize: '13px' }}>已达最大重试次数</p>}
 							<button
 								className="retry-btn"
 								onClick={handleRetry}
 								disabled={!canRetry || loading}
 							>
-								{maxRetriesReached ? '已达最大重试次数' : '重试'}
+								{maxRetriesReached ? '已达最大重试次数' : isRetrying ? '正在重试...' : '重试'}
 							</button>
 						</div>
 					)}
 
-					{loading && !error && (
+					{loading && !error && !streamedContent && (
 						<div className="loading">
 							<div className="loading-spinner"></div>
 							<span>正在生成摘要...</span>
 						</div>
 					)}
 
-					{(streamedContent || loading) && !error && (
+					{(streamedContent || (loading && !error)) && (
 						<div className="summary">
-							{streamedContent}
+							{formatText(streamedContent)}
 							{loading && <span className="cursor"></span>}
 						</div>
 					)}
@@ -476,7 +529,7 @@ export default function SummaryPage() {
 				</div>
 
 				<div className="footer">
-					Powered by <a href="https://www.ruminer.app" target="_blank">Ruminer</a> · Made with ❤️
+					Powered by <a href="https://www.ruminer.app" target="_blank">Ruminer</a> · Made with OpenClaw
 				</div>
 			</div>
 		</>
