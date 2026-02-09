@@ -134,15 +134,8 @@ const NewsletterForm = styled("form", {
   width: "100%",
   marginTop: "10px",
 
-  "@sm": {
-    gridColumn: 2,
-    gridRow: 1,
-  },
-
   "@md": {
     maxWidth: "400px",
-    gridColumn: 2,
-    gridRow: 1,
   },
 });
 
@@ -348,7 +341,9 @@ export function LandingFooter({ lang }: { lang: "en" | "zh" }): JSX.Element {
                 ? "Ruminer（守藏史）是您的数字记忆助理。"
                 : "Ruminer is your cyber memory assistant."}
             </FooterDescription>
-            <NewsletterForm onSubmit={handleSubmit}>
+          </FooterColumn>
+
+          <NewsletterForm onSubmit={handleSubmit}>
             <EmailInput
               type="email"
               placeholder={lang === 'zh' ? '您的电子邮件地址' : 'Your email address'}
@@ -381,8 +376,7 @@ export function LandingFooter({ lang }: { lang: "en" | "zh" }): JSX.Element {
                 {error}
               </StatusMessage>
             )}
-            </NewsletterForm>
-          </FooterColumn>
+          </NewsletterForm>
         </FooterColumns>
 
         <Copyright>
